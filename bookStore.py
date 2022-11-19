@@ -6,19 +6,24 @@ btnWidth = entryWidth // 2
 labelWidth = 7
 listWidth = labelWidth + entryWidth
 
-def autoComplete(e):
-    
-    titleEntry.delete(0,END)
-    authorEntry.delete(0,END)
-    yearEntry.delete(0,END)
-    isbnEntry.delete(0,END)
-    
-    rowId = listView.selection_get().split(" ")[0]
+def deAct(e):
+    listView.selection_clear(0,END)
 
-    titleEntry.insert(END,dbQuery.viewRowById(rowId)[0][0])
-    authorEntry.insert(END,dbQuery.viewRowById(rowId)[0][1])
-    yearEntry.insert(END,dbQuery.viewRowById(rowId)[0][2])
-    isbnEntry.insert(END,dbQuery.viewRowById(rowId)[0][3])
+def autoComplete(e):
+  
+    
+    if len(listView.curselection()) != 0:  
+        titleEntry.delete(0,END)
+        authorEntry.delete(0,END)
+        yearEntry.delete(0,END)
+        isbnEntry.delete(0,END)
+         
+        rowId = listView.selection_get().split(" ")[0]
+
+        titleEntry.insert(END,dbQuery.viewRowById(rowId)[0][0])
+        authorEntry.insert(END,dbQuery.viewRowById(rowId)[0][1])
+        yearEntry.insert(END,dbQuery.viewRowById(rowId)[0][2])
+        isbnEntry.insert(END,dbQuery.viewRowById(rowId)[0][3])
 
 def viewAll():
     listView.delete(0,END)
@@ -93,6 +98,7 @@ scrollbarListX.pack(side=BOTTOM,fill=X)
 
 listView = Listbox(wholeList, width=listWidth,height=6,yscrollcommand=scrollbarListY.set,  xscrollcommand=scrollbarListX.set)
 listView.bind("<<ListboxSelect>>",autoComplete)
+listView.bind("<FocusOut>",deAct)
 listView.pack()
 
 scrollbarListY.config(command=listView.yview)
