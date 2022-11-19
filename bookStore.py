@@ -44,6 +44,7 @@ def deleteEntry():
     dbQuery.deleteRow(isbnValue.get())
     viewAll()
     listView.selection_set(0,0)
+    
         
 app = Tk()
 dbQuery.createTable()
@@ -112,7 +113,7 @@ updateBtn.pack()
 deleteBtn = Button(buttonFrame,text="Delete Selected", width=btnWidth, command=deleteEntry)
 deleteBtn.pack()
 
-closeBtn = Button(buttonFrame,text="Close", width=btnWidth)
+closeBtn = Button(buttonFrame,text="Close", width=btnWidth, command=exit)
 closeBtn.pack()
 
 
