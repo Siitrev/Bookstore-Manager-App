@@ -6,12 +6,12 @@ btnWidth = entryWidth // 2
 labelWidth = 7
 listWidth = labelWidth + entryWidth
 
+# Deactivating selection in Listbox
 def deAct(e):
     listView.selection_clear(0,END)
 
+# Filling entries with data
 def autoComplete(e):
-  
-    
     if len(listView.curselection()) != 0:  
         titleEntry.delete(0,END)
         authorEntry.delete(0,END)
@@ -25,46 +25,53 @@ def autoComplete(e):
         yearEntry.insert(END,dbQuery.viewRowById(rowId)[0][2])
         isbnEntry.insert(END,dbQuery.viewRowById(rowId)[0][3])
 
+# Viewing all the data from database
 def viewAll():
     listView.delete(0,END)
     entries = dbQuery.viewAll()
     for i in entries:
         listView.insert(END,i)
 
+# Adding data to database
 def addEntry():
     dbQuery.addRow(titleValue.get(),authorValue.get(),yearValue.get(),isbnValue.get())
     viewAll()
 
+# Updating selected row in database
 def updateSelected():
     dbQuery.updateRow(titleValue.get(),authorValue.get(),yearValue.get(),isbnValue.get())
     viewAll()
-    
+
+# Searching for a certain row and showing it in a Listbox
 def searchEntry():
     listView.delete(0,END)
     searchedEntries = dbQuery.viewRowByTitleAndAuth(titleValue.get(),authorValue.get())
     for i in searchedEntries:
         listView.insert(END,i)
 
+# Deleting selected row in a database
 def deleteEntry():
     dbQuery.deleteRow(isbnValue.get())
     viewAll()
     listView.selection_set(0,0)
     
-        
+# Starting the app
 app = Tk()
-dbQuery.createTable()
 
+# Creating table for books
+dbQuery.createTable()
 
 app.minsize(500,250)
 app.title("Bookstore")
 
-
+# Creating frames for button widgets and listbox widget
 wholeList = Frame(app,pady=40)
 wholeList.grid(row=3, column=0,columnspan=3,rowspan=3)
 
 buttonFrame = Frame(app,pady=25)
 buttonFrame.grid(row=2,column=3,rowspan=6)
 
+# Creating Entries and labels
 
 titleValue = StringVar()
 titleLabel = Label(text="Title", width=labelWidth)
@@ -90,6 +97,7 @@ isbnEntry = Entry(app, textvariable=isbnValue, width=entryWidth)
 isbnEntry.grid(row=1, column=3)
 isbnLabel.grid(row=1, column=2)
 
+# Creating Listbox with scrollbars
 scrollbarListY = Scrollbar(wholeList)
 scrollbarListY.pack(side=RIGHT,fill=Y)
 
@@ -103,6 +111,8 @@ listView.pack()
 
 scrollbarListY.config(command=listView.yview)
 scrollbarListX.config(command=listView.xview)
+
+# Creating buttons
 
 viewBtn = Button(buttonFrame,text="View All", width=btnWidth, command=viewAll)
 viewBtn.pack()
