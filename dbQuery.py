@@ -17,3 +17,15 @@ def viewAll():
         cur.execute("SELECT * FROM store")
         result = cur.fetchall()
         return result
+
+def viewRowById(rowId):
+    with sqlite3.connect("bookStore.db") as conn:
+        cur = conn.cursor()
+        cur.execute(f"SELECT title,author,year,ISBN FROM store WHERE id={rowId}")
+        result = cur.fetchall()
+        return result
+
+def updateRow(titleV,authorV,yearV,isbnV):
+    with sqlite3.connect("bookStore.db") as conn:
+        cur = conn.cursor()
+        cur.execute(f"UPDATE store SET title='{titleV}',author='{authorV}', year={yearV}, isbn='{isbnV}' WHERE isbn='{isbnV}'")

@@ -6,9 +6,19 @@ btnWidth = entryWidth // 2
 labelWidth = 7
 listWidth = labelWidth + entryWidth
 
-def dupa(e):
+def autoComplete(e):
+    
     titleEntry.delete(0,END)
-    titleEntry.insert(END,listView.selection_get())
+    authorEntry.delete(0,END)
+    yearEntry.delete(0,END)
+    isbnEntry.delete(0,END)
+    
+    rowId = listView.selection_get().split(" ")[0]
+
+    titleEntry.insert(END,dbQuery.viewRowById(rowId)[0][0])
+    authorEntry.insert(END,dbQuery.viewRowById(rowId)[0][1])
+    yearEntry.insert(END,dbQuery.viewRowById(rowId)[0][2])
+    isbnEntry.insert(END,dbQuery.viewRowById(rowId)[0][3])
 
 def viewAll():
     listView.delete(0,END)
@@ -18,17 +28,30 @@ def viewAll():
 
 def addEntry():
     dbQuery.addRow(titleValue.get(),authorValue.get(),yearValue.get(),isbnValue.get())
+    viewAll()
+
+def updateSelected():
+    dbQuery.updateRow(titleValue.get(),authorValue.get(),yearValue.get(),isbnValue.get())
+    viewAll()
 app = Tk()
 dbQuery.createTable()
+
+
 app.minsize(500,250)
 app.title("Bookstore")
-wholeList = Frame(app)
+
+
+wholeList = Frame(app,pady=40)
 wholeList.grid(row=3, column=0,columnspan=3,rowspan=3)
+
+buttonFrame = Frame(app,pady=25)
+buttonFrame.grid(row=2,column=3,rowspan=6)
+
 
 titleValue = StringVar()
 titleLabel = Label(text="Title", width=labelWidth)
 titleEntry = Entry(app, textvariable=titleValue, width=entryWidth)
-titleEntry.grid(row=0, column=1)
+titleEntry.grid(row=0, column=1,pady=10)
 titleLabel.grid(row=0, column=0)
 
 authorValue = StringVar()
@@ -56,30 +79,31 @@ scrollbarListX = Scrollbar(wholeList, orient=HORIZONTAL)
 scrollbarListX.pack(side=BOTTOM,fill=X)
 
 listView = Listbox(wholeList, width=listWidth,height=6,yscrollcommand=scrollbarListY.set,  xscrollcommand=scrollbarListX.set)
+listView.bind("<<ListboxSelect>>",autoComplete)
 listView.pack()
 
 scrollbarListY.config(command=listView.yview)
 scrollbarListX.config(command=listView.xview)
 
-viewBtn = Button(text="View All", width=btnWidth, command=viewAll)
-viewBtn.grid(row=2, column=3)
+viewBtn = Button(buttonFrame,text="View All", width=btnWidth, command=viewAll)
+viewBtn.pack()
 
-searchBtn = Button(text="Search Entry", width=btnWidth)
-searchBtn.grid(row=3, column=3)
+searchBtn = Button(buttonFrame,text="Search Entry", width=btnWidth)
+searchBtn.pack()
 
-addBtn = Button(text="Add Entry", width=btnWidth,command=addEntry)
-addBtn.grid(row=4, column=3)
+addBtn = Button(buttonFrame,text="Add Entry", width=btnWidth,command=addEntry)
+addBtn.pack()
 
-updateBtn = Button(text="Update Selected", width=btnWidth)
-updateBtn.grid(row=5, column=3)
+updateBtn = Button(buttonFrame,text="Update Selected", width=btnWidth, command=updateSelected)
+updateBtn.pack()
 
-deleteBtn = Button(text="Delete Selected", width=btnWidth)
-deleteBtn.grid(row=6, column=3)
+deleteBtn = Button(buttonFrame,text="Delete Selected", width=btnWidth)
+deleteBtn.pack()
 
-closeBtn = Button(text="Close", width=btnWidth)
-closeBtn.grid(row=7, column=3)
+closeBtn = Button(buttonFrame,text="Close", width=btnWidth)
+closeBtn.pack()
 
-listView.bind("<<ListboxSelect>>",dupa)
+
 
 
 app.mainloop()
