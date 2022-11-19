@@ -33,6 +33,18 @@ def addEntry():
 def updateSelected():
     dbQuery.updateRow(titleValue.get(),authorValue.get(),yearValue.get(),isbnValue.get())
     viewAll()
+    
+def searchEntry():
+    listView.delete(0,END)
+    searchedEntries = dbQuery.viewRowByTitleAndAuth(titleValue.get(),authorValue.get())
+    for i in searchedEntries:
+        listView.insert(END,i)
+
+def deleteEntry():
+    dbQuery.deleteRow(isbnValue.get())
+    viewAll()
+    listView.selection_set(0,0)
+        
 app = Tk()
 dbQuery.createTable()
 
@@ -88,7 +100,7 @@ scrollbarListX.config(command=listView.xview)
 viewBtn = Button(buttonFrame,text="View All", width=btnWidth, command=viewAll)
 viewBtn.pack()
 
-searchBtn = Button(buttonFrame,text="Search Entry", width=btnWidth)
+searchBtn = Button(buttonFrame,text="Search Entry", width=btnWidth, command=searchEntry)
 searchBtn.pack()
 
 addBtn = Button(buttonFrame,text="Add Entry", width=btnWidth,command=addEntry)
@@ -97,7 +109,7 @@ addBtn.pack()
 updateBtn = Button(buttonFrame,text="Update Selected", width=btnWidth, command=updateSelected)
 updateBtn.pack()
 
-deleteBtn = Button(buttonFrame,text="Delete Selected", width=btnWidth)
+deleteBtn = Button(buttonFrame,text="Delete Selected", width=btnWidth, command=deleteEntry)
 deleteBtn.pack()
 
 closeBtn = Button(buttonFrame,text="Close", width=btnWidth)

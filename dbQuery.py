@@ -29,3 +29,15 @@ def updateRow(titleV,authorV,yearV,isbnV):
     with sqlite3.connect("bookStore.db") as conn:
         cur = conn.cursor()
         cur.execute(f"UPDATE store SET title='{titleV}',author='{authorV}', year={yearV}, isbn='{isbnV}' WHERE isbn='{isbnV}'")
+
+def viewRowByTitleAndAuth(titleV,authorV):
+    with sqlite3.connect("bookStore.db") as conn:
+        cur = conn.cursor()
+        cur.execute(f"SELECT * FROM store WHERE title LIKE '{titleV}' AND author LIKE '{authorV}'")
+        result = cur.fetchall()
+        return result
+    
+def deleteRow(isbnV):
+    with sqlite3.connect("bookStore.db") as conn:
+        cur = conn.cursor()
+        cur.execute(f"DELETE FROM store WHERE ISBN = '{isbnV}'")
