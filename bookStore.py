@@ -1,5 +1,7 @@
 from tkinter import *
 import dbQuery
+import sys
+
 
 entryWidth = 30
 btnWidth = entryWidth // 2
@@ -129,7 +131,7 @@ updateBtn.pack()
 deleteBtn = Button(buttonFrame,text="Delete Selected", width=btnWidth, command=deleteEntry)
 deleteBtn.pack()
 
-closeBtn = Button(buttonFrame,text="Close", width=btnWidth, command=exit)
+closeBtn = Button(buttonFrame,text="Close", width=btnWidth, command=sys.exit)
 closeBtn.pack()
 
 
