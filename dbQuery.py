@@ -30,10 +30,10 @@ def updateRow(titleV,authorV,yearV,isbnV):
         cur = conn.cursor()
         cur.execute(f"UPDATE store SET title='{titleV}',author='{authorV}', year={yearV}, isbn='{isbnV}' WHERE isbn='{isbnV}'")
 
-def viewRowByTitleAndAuth(titleV,authorV):
+def viewRowByTitleAndAuth(titleV="",authorV="",yearV=0,isbnV=""):
     with sqlite3.connect("bookStore.db") as conn:
         cur = conn.cursor()
-        cur.execute(f"SELECT * FROM store WHERE title LIKE '{titleV}' AND author LIKE '{authorV}'")
+        cur.execute(f"SELECT * FROM store WHERE title LIKE '{titleV}' OR author LIKE '{authorV}' OR year={yearV} OR ISBN LIKE '{isbnV}'")
         result = cur.fetchall()
         return result
     

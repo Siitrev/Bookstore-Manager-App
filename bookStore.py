@@ -45,7 +45,7 @@ def updateSelected():
 # Searching for a certain row and showing it in a Listbox
 def searchEntry():
     listView.delete(0,END)
-    searchedEntries = dbQuery.viewRowByTitleAndAuth(titleValue.get(),authorValue.get())
+    searchedEntries = dbQuery.viewRowByTitleAndAuth(titleValue.get(),authorValue.get(),yearValue.get(),isbnValue.get())
     for i in searchedEntries:
         listView.insert(END,i)
 
