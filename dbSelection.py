@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import filedialog
 import os
 
-class DbSelection(object):
+class DbSelection:
     
     def __init__(self,app : Tk):
         

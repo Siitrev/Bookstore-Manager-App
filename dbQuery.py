@@ -1,7 +1,7 @@
 import sqlite3
 
 
-class Database():
+class Database:
     
     
     def __init__(self,dbPath):

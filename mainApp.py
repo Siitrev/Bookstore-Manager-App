@@ -3,7 +3,7 @@ from dbQuery import Database
 from tkinter import filedialog
 import sys
 
-class Main(object):
+class Main:
     
     def __init__(self,app : Tk, dbPath:str):
         
