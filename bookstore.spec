@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(
-    ['bookstore.py'],
+    ['bookStore.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -28,7 +28,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='bookstore',
+    name='bookStore',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -41,5 +41,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='./book-icon.ico',
+    icon=['book-icon.ico'],
 )

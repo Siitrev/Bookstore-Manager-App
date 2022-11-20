@@ -1,43 +1,43 @@
 import sqlite3
 
-def createTable():
-    conn = sqlite3.connect("bookStore.db")
-    cur = conn.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS store(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title TEXT, author TEXT, year INT, ISBN TEXT)")
-    conn.close()
+
+class Database():
     
-def addRow(titleV,authorV,yearV,isbnV):
-    with sqlite3.connect("bookStore.db") as conn:
-        cur = conn.cursor()
-        cur.execute(f"INSERT INTO store(title,author,year,ISBN) VALUES('{titleV}','{authorV}',{yearV},'{isbnV}')")
-
-def viewAll():
-    with sqlite3.connect("bookStore.db") as conn:
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM store")
-        result = cur.fetchall()
-        return result
-
-def viewRowById(rowId):
-    with sqlite3.connect("bookStore.db") as conn:
-        cur = conn.cursor()
-        cur.execute(f"SELECT title,author,year,ISBN FROM store WHERE id={rowId}")
-        result = cur.fetchall()
-        return result
-
-def updateRow(titleV,authorV,yearV,isbnV):
-    with sqlite3.connect("bookStore.db") as conn:
-        cur = conn.cursor()
-        cur.execute(f"UPDATE store SET title='{titleV}',author='{authorV}', year={yearV}, isbn='{isbnV}' WHERE isbn='{isbnV}'")
-
-def viewRowByTitleAndAuth(titleV="",authorV="",yearV=0,isbnV=""):
-    with sqlite3.connect("bookStore.db") as conn:
-        cur = conn.cursor()
-        cur.execute(f"SELECT * FROM store WHERE title LIKE '{titleV}' OR author LIKE '{authorV}' OR year={yearV} OR ISBN LIKE '{isbnV}'")
-        result = cur.fetchall()
-        return result
     
-def deleteRow(isbnV):
-    with sqlite3.connect("bookStore.db") as conn:
-        cur = conn.cursor()
-        cur.execute(f"DELETE FROM store WHERE ISBN = '{isbnV}'")
+    def __init__(self,dbPath):
+        self.conn = sqlite3.connect(dbPath)
+        self.cur = self.conn.cursor()
+        self.cur.execute("CREATE TABLE IF NOT EXISTS store(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title TEXT, author TEXT, year INT, ISBN TEXT)")
+        self.conn.commit()
+    
+    def addRow(self,titleV,authorV,yearV,isbnV):
+        self.cur.execute(f"INSERT INTO store(title,author,year,ISBN) VALUES('{titleV}','{authorV}',{yearV},'{isbnV}')")
+        self.conn.commit()
+        
+    def viewAll(self):
+        self.cur.execute("SELECT * FROM store")
+        result = self.cur.fetchall()
+        return result
+
+    def viewRowById(self,rowId):
+        self.cur.execute(f"SELECT title,author,year,ISBN FROM store WHERE id={rowId}")
+        result = self.cur.fetchall()
+        return result
+
+    def updateRow(self,titleV,authorV,yearV,isbnV):
+        self.cur.execute(f"UPDATE store SET title='{titleV}',author='{authorV}', year={yearV}, isbn='{isbnV}' WHERE isbn='{isbnV}'")
+        self.conn.commit()
+
+    def viewRowByTitleAndAuth(self,titleV="",authorV="",yearV="",isbnV=""):
+        self.cur.execute(f"SELECT * FROM store WHERE year='{yearV}' OR title='{titleV}' OR author='{authorV}' OR ISBN='{isbnV}'")
+        result = self.cur.fetchall()
+        return result
+        
+    def deleteRow(self,isbnV):
+        self.cur.execute(f"DELETE FROM store WHERE ISBN = '{isbnV}'")
+        self.conn.commit()
+    
+    def __del__(self):
+        self.conn.close()
+    
+    
